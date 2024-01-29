@@ -1,5 +1,31 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+struct Searcher {
+    tobesearched: Vec<String>,
+    searchstring: String,
+}
+
+impl Searcher {
+    pub fn new(tobesearched: Vec<String>) -> Searcher {
+        Searcher {
+            tobesearched,
+            searchstring: String::new(),
+        }
+    }
+    pub fn searchresults(&self) -> Option<Vec<String>> {
+        if self.tobesearched.contains(&self.searchstring) {
+            Some(
+                self.tobesearched
+                    .clone()
+                    .into_iter()
+                    .filter(|element| element.contains(&self.searchstring))
+                    .collect(),
+            )
+        } else {
+            None
+        }
+    }
+    pub fn addsearch(&mut self, character: char) {
+        self.searchstring.push(character)
+    }
 }
 
 #[cfg(test)]
@@ -8,7 +34,9 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+        let mut testsearcher = Searcher::new(vec![String::from("hi")]);
+        testsearcher.addsearch('h');
+        testsearcher.addsearch('i');
+        assert_eq!(testsearcher.searchresults().unwrap().len(), 1);
     }
 }
