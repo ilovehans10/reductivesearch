@@ -1,7 +1,7 @@
 pub struct Searcher {
     tobesearched: Vec<String>,
-    searchstring: String,
-    searchcache: Vec<String>,
+    pub searchstring: String,
+    pub searchcache: Vec<String>,
 }
 
 impl Searcher {
@@ -14,24 +14,32 @@ impl Searcher {
     }
 
     pub fn search_results(&self) -> Result<Vec<String>, String> {
-        let filteredlist: Vec<String> = self.substring_search(&self.searchstring);
-        if filteredlist.is_empty() {
-            Err(String::from("String not found"))
+        if !self.searchcache.is_empty() {
+            Ok(self.searchcache.clone())
         } else {
-            Ok(filteredlist)
+            Err(String::from("String not found"))
         }
     }
 
     pub fn add_search(&mut self, character: char) {
-        self.searchstring.push(character)
+        let mut searchstring: String = self.searchstring.clone();
+        searchstring.push(character);
+        if !self.substring_search(searchstring.as_str()).is_empty(){
+            self.searchstring.push(character);
+            self.update_cache();
+        }
     }
 
-    fn substring_search(&self, searchstring: &str) -> Vec<String> {
-        self.tobesearched
+    fn substring_search(&self, searchstring: &str) -> Vec<String>{
+        self.searchcache
             .clone()
             .into_iter()
             .filter(|element| element.contains(searchstring))
             .collect()
+    }
+
+    fn update_cache(&mut self) {
+        self.searchcache = self.substring_search(&self.searchstring)
     }
 }
 
@@ -43,6 +51,23 @@ mod tests {
     fn two_word_test() {
         let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill")]);
         testsearcher.add_search('h');
+        testsearcher.add_search('i');
+        assert_eq!(testsearcher.search_results().unwrap().len(), 2);
+    }
+
+    #[test]
+    fn three_word_test() {
+        let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill"), String::from("hello")]);
+        testsearcher.add_search('h');
+        testsearcher.add_search('i');
+        assert_eq!(testsearcher.search_results().unwrap().len(), 2);
+    }
+
+    #[test]
+    fn bad_add_test() {
+        let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill"), String::from("hello")]);
+        testsearcher.add_search('h');
+        testsearcher.add_search('a');
         testsearcher.add_search('i');
         assert_eq!(testsearcher.search_results().unwrap().len(), 2);
     }
