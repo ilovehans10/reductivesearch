@@ -21,7 +21,7 @@ impl Searcher {
         }
     }
 
-    pub fn add_search(&mut self, character: char) {
+    pub fn add_character(&mut self, character: char) {
         let mut searchstring: String = self.searchstring.clone();
         searchstring.push(character);
         if !self.substring_search(searchstring.as_str()).is_empty(){
@@ -50,25 +50,25 @@ mod tests {
     #[test]
     fn two_word_test() {
         let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill")]);
-        testsearcher.add_search('h');
-        testsearcher.add_search('i');
+        testsearcher.add_character('h');
+        testsearcher.add_character('i');
         assert_eq!(testsearcher.search_results().unwrap().len(), 2);
     }
 
     #[test]
     fn three_word_test() {
         let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill"), String::from("hello")]);
-        testsearcher.add_search('h');
-        testsearcher.add_search('i');
+        testsearcher.add_character('h');
+        testsearcher.add_character('i');
         assert_eq!(testsearcher.search_results().unwrap().len(), 2);
     }
 
     #[test]
     fn bad_add_test() {
         let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill"), String::from("hello")]);
-        testsearcher.add_search('h');
-        testsearcher.add_search('a');
-        testsearcher.add_search('i');
+        testsearcher.add_character('h');
+        testsearcher.add_character('a');
+        testsearcher.add_character('i');
         assert_eq!(testsearcher.search_results().unwrap().len(), 2);
     }
 }
