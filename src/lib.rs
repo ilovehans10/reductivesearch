@@ -1,11 +1,13 @@
 pub struct Searcher {
     tobesearched: Vec<String>,
     searchstring: String,
+    searchcache: Vec<String>,
 }
 
 impl Searcher {
     pub fn new(tobesearched: Vec<String>) -> Searcher {
         Searcher {
+            searchcache: tobesearched.clone(),
             tobesearched,
             searchstring: String::new(),
         }
