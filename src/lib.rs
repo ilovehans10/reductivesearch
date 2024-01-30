@@ -10,6 +10,7 @@ impl Searcher {
             searchstring: String::new(),
         }
     }
+
     pub fn search_results(&self) -> Result<Vec<String>, String> {
         let filteredlist: Vec<String> = self.substring_search(&self.searchstring);
         if filteredlist.is_empty() {
@@ -18,9 +19,11 @@ impl Searcher {
             Ok(filteredlist)
         }
     }
+
     pub fn add_search(&mut self, character: char) {
         self.searchstring.push(character)
     }
+
     fn substring_search(&self, searchstring: &str) -> Vec<String> {
         self.tobesearched
             .clone()
