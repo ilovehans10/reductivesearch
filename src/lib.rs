@@ -65,7 +65,11 @@ mod tests {
 
     #[test]
     fn three_word_test() {
-        let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill"), String::from("hello")]);
+        let mut testsearcher = Searcher::new(vec![
+            String::from("hi"),
+            String::from("hill"),
+            String::from("hello"),
+        ]);
         testsearcher.add_character('h');
         testsearcher.add_character('i');
         assert_eq!(testsearcher.search_results().unwrap().len(), 2);
@@ -73,7 +77,11 @@ mod tests {
 
     #[test]
     fn bad_add_test() {
-        let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill"), String::from("hello")]);
+        let mut testsearcher = Searcher::new(vec![
+            String::from("hi"),
+            String::from("hill"),
+            String::from("hello"),
+        ]);
         testsearcher.add_character('h');
         testsearcher.add_character('a');
         testsearcher.add_character('i');
@@ -82,7 +90,11 @@ mod tests {
 
     #[test]
     fn remove_test() {
-        let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill"), String::from("hello")]);
+        let mut testsearcher = Searcher::new(vec![
+            String::from("hi"),
+            String::from("hill"),
+            String::from("hello"),
+        ]);
         testsearcher.add_character('h');
         testsearcher.add_character('i');
         testsearcher.remove_character();
