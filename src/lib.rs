@@ -11,20 +11,22 @@ impl Searcher {
         }
     }
     pub fn searchresults(&self) -> Result<Vec<String>, String> {
-        if self.tobesearched.contains(&self.searchstring) {
-            Ok(
-                self.tobesearched
-                    .clone()
-                    .into_iter()
-                    .filter(|element| element.contains(&self.searchstring))
-                    .collect(),
-            )
-        } else {
+        let filteredlist: Vec<String> = self.substringsearch(&self.searchstring);
+        if filteredlist.is_empty() {
             Err(String::from("String not found"))
+        } else {
+            Ok(filteredlist)
         }
     }
     pub fn addsearch(&mut self, character: char) {
         self.searchstring.push(character)
+    }
+    fn substringsearch(&self, searchstring: &str) -> Vec<String> {
+        self.tobesearched
+            .clone()
+            .into_iter()
+            .filter(|element| element.contains(searchstring))
+            .collect()
     }
 }
 
@@ -34,9 +36,9 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let mut testsearcher = Searcher::new(vec![String::from("hi")]);
+        let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill")]);
         testsearcher.addsearch('h');
         testsearcher.addsearch('i');
-        assert_eq!(testsearcher.searchresults().unwrap().len(), 1);
+        assert_eq!(testsearcher.searchresults().unwrap().len(), 2);
     }
 }
