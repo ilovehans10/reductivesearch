@@ -1,8 +1,10 @@
+#[allow(dead_code)]
 struct Searcher {
     tobesearched: Vec<String>,
     searchstring: String,
 }
 
+#[allow(dead_code)]
 impl Searcher {
     pub fn new(tobesearched: Vec<String>) -> Searcher {
         Searcher {
