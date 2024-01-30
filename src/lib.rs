@@ -1,57 +1,59 @@
-pub struct Searcher {
-    tobesearched: Vec<String>,
-    searchstring: String,
-    searchcache: Vec<String>,
-}
-
-impl Searcher {
-    pub fn new(tobesearched: Vec<String>) -> Searcher {
-        Searcher {
-            searchcache: tobesearched.clone(),
-            tobesearched,
-            searchstring: String::new(),
-        }
+pub mod reductivesearch {
+    pub struct Searcher {
+        tobesearched: Vec<String>,
+        searchstring: String,
+        searchcache: Vec<String>,
     }
 
-    pub fn search_results(&self) -> Result<Vec<String>, String> {
-        if !self.searchcache.is_empty() {
-            Ok(self.searchcache.clone())
-        } else {
-            Err(String::from("String not found"))
+    impl Searcher {
+        pub fn new(tobesearched: Vec<String>) -> Searcher {
+            Searcher {
+                searchcache: tobesearched.clone(),
+                tobesearched,
+                searchstring: String::new(),
+            }
         }
-    }
 
-    pub fn add_character(&mut self, character: char) {
-        let mut searchstring: String = self.searchstring.clone();
-        searchstring.push(character);
-        if !self.substring_search(searchstring.as_str()).is_empty(){
-            self.searchstring.push(character);
+        pub fn search_results(&self) -> Result<Vec<String>, String> {
+            if !self.searchcache.is_empty() {
+                Ok(self.searchcache.clone())
+            } else {
+                Err(String::from("String not found"))
+            }
+        }
+
+        pub fn add_character(&mut self, character: char) {
+            let mut searchstring: String = self.searchstring.clone();
+            searchstring.push(character);
+            if !self.substring_search(searchstring.as_str()).is_empty() {
+                self.searchstring.push(character);
+                self.update_cache();
+            }
+        }
+
+        pub fn remove_character(&mut self) {
+            self.searchstring.pop();
+            self.searchcache = self.tobesearched.clone();
             self.update_cache();
         }
-    }
 
-    pub fn remove_character(&mut self) {
-        self.searchstring.pop();
-        self.searchcache = self.tobesearched.clone();
-        self.update_cache();
-    }
+        fn substring_search(&self, searchstring: &str) -> Vec<String> {
+            self.searchcache
+                .clone()
+                .into_iter()
+                .filter(|element| element.contains(searchstring))
+                .collect()
+        }
 
-    fn substring_search(&self, searchstring: &str) -> Vec<String>{
-        self.searchcache
-            .clone()
-            .into_iter()
-            .filter(|element| element.contains(searchstring))
-            .collect()
-    }
-
-    fn update_cache(&mut self) {
-        self.searchcache = self.substring_search(&self.searchstring)
+        fn update_cache(&mut self) {
+            self.searchcache = self.substring_search(&self.searchstring)
+        }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::reductivesearch::*;
 
     #[test]
     fn two_word_test() {
