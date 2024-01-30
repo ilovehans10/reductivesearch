@@ -33,6 +33,7 @@ impl Searcher {
     pub fn remove_character(&mut self) {
         self.searchstring.pop();
         self.searchcache = self.tobesearched.clone();
+        self.update_cache();
     }
 
     fn substring_search(&self, searchstring: &str) -> Vec<String>{
