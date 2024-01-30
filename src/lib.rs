@@ -30,6 +30,11 @@ impl Searcher {
         }
     }
 
+    pub fn remove_character(&mut self) {
+        self.searchstring.pop();
+        self.searchcache = self.tobesearched.clone();
+    }
+
     fn substring_search(&self, searchstring: &str) -> Vec<String>{
         self.searchcache
             .clone()
@@ -70,5 +75,15 @@ mod tests {
         testsearcher.add_character('a');
         testsearcher.add_character('i');
         assert_eq!(testsearcher.search_results().unwrap().len(), 2);
+    }
+
+    #[test]
+    fn remove_test() {
+        let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill"), String::from("hello")]);
+        testsearcher.add_character('h');
+        testsearcher.add_character('i');
+        testsearcher.remove_character();
+        testsearcher.add_character('e');
+        assert_eq!(testsearcher.search_results().unwrap().len(), 1);
     }
 }
