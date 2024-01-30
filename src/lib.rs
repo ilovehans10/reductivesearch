@@ -1,7 +1,7 @@
 pub struct Searcher {
     tobesearched: Vec<String>,
-    pub searchstring: String,
-    pub searchcache: Vec<String>,
+    searchstring: String,
+    searchcache: Vec<String>,
 }
 
 impl Searcher {
