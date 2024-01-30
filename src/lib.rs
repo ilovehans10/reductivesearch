@@ -12,9 +12,9 @@ impl Searcher {
             searchstring: String::new(),
         }
     }
-    pub fn searchresults(&self) -> Option<Vec<String>> {
+    pub fn searchresults(&self) -> Result<Vec<String>, String> {
         if self.tobesearched.contains(&self.searchstring) {
-            Some(
+            Ok(
                 self.tobesearched
                     .clone()
                     .into_iter()
@@ -22,7 +22,7 @@ impl Searcher {
                     .collect(),
             )
         } else {
-            None
+            Err(String::from("String not found"))
         }
     }
     pub fn addsearch(&mut self, character: char) {
