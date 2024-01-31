@@ -6,6 +6,15 @@ pub mod reductivesearch {
     }
 
     impl Searcher {
+        /// Creates a new Searcher
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// use reductivesearch::reductivesearch::Searcher;
+        ///
+        /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// ```
         pub fn new(tobesearched: Vec<String>) -> Searcher {
             Searcher {
                 searchcache: tobesearched.clone(),
@@ -14,6 +23,19 @@ pub mod reductivesearch {
             }
         }
 
+        /// Returns the search results stored in the search wrapped in a result
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// use reductivesearch::reductivesearch::Searcher;
+        ///
+        /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// greetingsearch.add_character('h');
+        /// greetingsearch.add_character('e');
+        ///
+        /// assert_eq!(vec![String::from("hello")], greetingsearch.search_results().unwrap());
+        /// ```
         pub fn search_results(&self) -> Result<Vec<String>, String> {
             if !self.searchcache.is_empty() {
                 Ok(self.searchcache.clone())
@@ -22,6 +44,19 @@ pub mod reductivesearch {
             }
         }
 
+        /// Adds a character to the search string and updates the search cache
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// use reductivesearch::reductivesearch::Searcher;
+        ///
+        /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// greetingsearch.add_character('h');
+        /// greetingsearch.add_character('e');
+        ///
+        /// assert_eq!(vec![String::from("hello")], greetingsearch.search_results().unwrap());
+        /// ```
         pub fn add_character(&mut self, character: char) {
             let mut searchstring: String = self.searchstring.clone();
             searchstring.push(character);
@@ -31,6 +66,21 @@ pub mod reductivesearch {
             }
         }
 
+        /// Adds a character to the search string and updates the search cache
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// use reductivesearch::reductivesearch::Searcher;
+        ///
+        /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// greetingsearch.add_character('h');
+        /// greetingsearch.add_character('e');
+        /// greetingsearch.remove_character();
+        /// greetingsearch.add_character('i');
+        ///
+        /// assert_eq!(vec![String::from("hi")], greetingsearch.search_results().unwrap());
+        /// ```
         pub fn remove_character(&mut self) {
             self.searchstring.pop();
             self.searchcache = self.tobesearched.clone();
