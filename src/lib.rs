@@ -87,6 +87,25 @@ pub mod reductivesearch {
             self.update_cache();
         }
 
+        /// Clears the search and resets the search cache
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// use reductivesearch::reductivesearch::Searcher;
+        ///
+        /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// greetingsearch.add_character('h');
+        /// greetingsearch.add_character('e');
+        /// greetingsearch.reset_search();
+        ///
+        /// assert_eq!(vec![String::from("hi"), String::from("hello")], greetingsearch.search_results().unwrap());
+        /// ```
+        pub fn reset_search(&mut self) {
+            self.searchstring.clear();
+            self.searchcache = self.tobesearched.clone();
+        }
+
         fn substring_search(&self, searchstring: &str) -> Vec<String> {
             self.searchcache
                 .clone()
@@ -150,5 +169,18 @@ mod tests {
         testsearcher.remove_character();
         testsearcher.add_character('e');
         assert_eq!(testsearcher.search_results().unwrap().len(), 1);
+    }
+
+    #[test]
+    fn reset_test() {
+        let mut testsearcher = Searcher::new(vec![
+            String::from("hi"),
+            String::from("hill"),
+            String::from("hello"),
+        ]);
+        testsearcher.add_character('h');
+        testsearcher.add_character('i');
+        testsearcher.reset_search();
+        assert_eq!(testsearcher.search_results().unwrap().len(), 3);
     }
 }
