@@ -31,8 +31,8 @@ pub mod reductivesearch {
         /// use reductivesearch::reductivesearch::Searcher;
         ///
         /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greetingsearch.add_character('h');
-        /// greetingsearch.add_character('e');
+        /// greetingsearch.add_character('h').unwrap();
+        /// greetingsearch.add_character('e').unwrap();
         ///
         /// assert_eq!(vec![String::from("hello")], greetingsearch.search_results().unwrap());
         /// ```
@@ -52,18 +52,20 @@ pub mod reductivesearch {
         /// use reductivesearch::reductivesearch::Searcher;
         ///
         /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greetingsearch.add_character('h');
-        /// greetingsearch.add_character('e');
+        /// greetingsearch.add_character('h').unwrap();
+        /// greetingsearch.add_character('e').unwrap();
         ///
         /// assert_eq!(vec![String::from("hello")], greetingsearch.search_results().unwrap());
         /// ```
-        pub fn add_character(&mut self, character: char) {
+        pub fn add_character(&mut self, character: char) -> Result<String, String> {
             let mut searchstring: String = self.searchstring.clone();
             searchstring.push(character);
             if !self.substring_search(searchstring.as_str()).is_empty() {
                 self.searchstring.push(character);
                 self.update_cache();
+                return Ok(self.searchstring.clone())
             }
+            Err(String::from("Adding character {character} caused search to reutrn invalid"))
         }
 
         /// Adds a character to the search string and updates the search cache
@@ -74,10 +76,10 @@ pub mod reductivesearch {
         /// use reductivesearch::reductivesearch::Searcher;
         ///
         /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greetingsearch.add_character('h');
-        /// greetingsearch.add_character('e');
+        /// greetingsearch.add_character('h').unwrap();
+        /// greetingsearch.add_character('e').unwrap();
         /// greetingsearch.remove_character();
-        /// greetingsearch.add_character('i');
+        /// greetingsearch.add_character('i').unwrap();
         ///
         /// assert_eq!(vec![String::from("hi")], greetingsearch.search_results().unwrap());
         /// ```
@@ -95,8 +97,8 @@ pub mod reductivesearch {
         /// use reductivesearch::reductivesearch::Searcher;
         ///
         /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greetingsearch.add_character('h');
-        /// greetingsearch.add_character('e');
+        /// greetingsearch.add_character('h').unwrap();
+        /// greetingsearch.add_character('e').unwrap();
         /// greetingsearch.reset_search();
         ///
         /// assert_eq!(vec![String::from("hi"), String::from("hello")], greetingsearch.search_results().unwrap());
@@ -106,6 +108,8 @@ pub mod reductivesearch {
             self.searchcache = self.tobesearched.clone();
         }
 
+        // This searches each element of searchcache for searchstring, and returns a vector of all
+        // of the results
         fn substring_search(&self, searchstring: &str) -> Vec<String> {
             self.searchcache
                 .clone()
@@ -127,8 +131,8 @@ mod tests {
     #[test]
     fn two_word_test() {
         let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill")]);
-        testsearcher.add_character('h');
-        testsearcher.add_character('i');
+        testsearcher.add_character('h').unwrap();
+        testsearcher.add_character('i').unwrap();
         assert_eq!(testsearcher.search_results().unwrap().len(), 2);
     }
 
@@ -139,8 +143,8 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        testsearcher.add_character('h');
-        testsearcher.add_character('i');
+        testsearcher.add_character('h').unwrap();
+        testsearcher.add_character('i').unwrap();
         assert_eq!(testsearcher.search_results().unwrap().len(), 2);
     }
 
@@ -151,9 +155,9 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        testsearcher.add_character('h');
-        testsearcher.add_character('a');
-        testsearcher.add_character('i');
+        testsearcher.add_character('h').unwrap();
+        testsearcher.add_character('a').unwrap_err();
+        testsearcher.add_character('i').unwrap();
         assert_eq!(testsearcher.search_results().unwrap().len(), 2);
     }
 
@@ -164,10 +168,10 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        testsearcher.add_character('h');
-        testsearcher.add_character('i');
+        testsearcher.add_character('h').unwrap();
+        testsearcher.add_character('i').unwrap();
         testsearcher.remove_character();
-        testsearcher.add_character('e');
+        testsearcher.add_character('e').unwrap();
         assert_eq!(testsearcher.search_results().unwrap().len(), 1);
     }
 
@@ -178,8 +182,8 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        testsearcher.add_character('h');
-        testsearcher.add_character('i');
+        testsearcher.add_character('h').unwrap();
+        testsearcher.add_character('i').unwrap();
         testsearcher.reset_search();
         assert_eq!(testsearcher.search_results().unwrap().len(), 3);
     }
