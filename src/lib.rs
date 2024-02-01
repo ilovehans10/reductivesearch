@@ -2,9 +2,9 @@ pub mod reductivesearch {
     ///This is a searcher struct, it is the main interface for the reductive search module. It can
     ///be added to
     pub struct Searcher {
-        tobesearched: Vec<String>,
-        searchstring: String,
-        searchcache: Vec<String>,
+        queried_strings: Vec<String>,
+        search_string: String,
+        search_cache: Vec<String>,
     }
 
     impl Searcher {
@@ -17,11 +17,11 @@ pub mod reductivesearch {
         ///
         /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
         /// ```
-        pub fn new(tobesearched: Vec<String>) -> Searcher {
+        pub fn new(queried_strings: Vec<String>) -> Searcher {
             Searcher {
-                searchcache: tobesearched.clone(),
-                tobesearched,
-                searchstring: String::new(),
+                search_cache: queried_strings.clone(),
+                queried_strings,
+                search_string: String::new(),
             }
         }
 
@@ -39,8 +39,8 @@ pub mod reductivesearch {
         /// assert_eq!(vec![String::from("hello")], greetingsearch.search_results().unwrap());
         /// ```
         pub fn search_results(&self) -> Result<Vec<String>, String> {
-            if !self.searchcache.is_empty() {
-                Ok(self.searchcache.clone())
+            if !self.search_cache.is_empty() {
+                Ok(self.search_cache.clone())
             } else {
                 Err(String::from("String not found"))
             }
@@ -60,12 +60,12 @@ pub mod reductivesearch {
         /// assert_eq!(vec![String::from("hello")], greetingsearch.search_results().unwrap());
         /// ```
         pub fn add_character(&mut self, character: char) -> Result<String, String> {
-            let mut searchstring: String = self.searchstring.clone();
-            searchstring.push(character);
-            if !self.substring_search(searchstring.as_str()).is_empty() {
-                self.searchstring.push(character);
+            let mut search_string: String = self.search_string.clone();
+            search_string.push(character);
+            if !self.substring_search(search_string.as_str()).is_empty() {
+                self.search_string.push(character);
                 self.update_cache();
-                return Ok(self.searchstring.clone())
+                return Ok(self.search_string.clone())
             }
             Err(String::from("Adding character {character} caused search to return invalid"))
         }
@@ -86,8 +86,8 @@ pub mod reductivesearch {
         /// assert_eq!(vec![String::from("hi")], greetingsearch.search_results().unwrap());
         /// ```
         pub fn remove_character(&mut self) {
-            self.searchstring.pop();
-            self.searchcache = self.tobesearched.clone();
+            self.search_string.pop();
+            self.search_cache = self.queried_strings.clone();
             self.update_cache();
         }
 
@@ -106,8 +106,8 @@ pub mod reductivesearch {
         /// assert_eq!(vec![String::from("hi"), String::from("hello")], greetingsearch.search_results().unwrap());
         /// ```
         pub fn reset_search(&mut self) {
-            self.searchstring.clear();
-            self.searchcache = self.tobesearched.clone();
+            self.search_string.clear();
+            self.search_cache = self.queried_strings.clone();
         }
 
         /// Add to the vec of strings to be searched through. This will also hard reset the cache.
@@ -124,26 +124,26 @@ pub mod reductivesearch {
         ///
         /// assert_eq!(vec![String::from("hello"), String::from("hev suit")], greetingsearch.search_results().unwrap());
         /// ```
-        pub fn add_to_vec(&mut self, stringtoadd: String) {
-            self.tobesearched.push(stringtoadd);
-            self.searchcache = self.tobesearched.clone();
+        pub fn add_to_vec(&mut self, string_to_add: String) {
+            self.queried_strings.push(string_to_add);
+            self.search_cache = self.queried_strings.clone();
             self.update_cache();
         }
 
         // This searches each element of searchcache for searchstring, and returns a vector of all
         // of the results
-        fn substring_search(&self, searchstring: &str) -> Vec<String> {
-            self.searchcache
+        fn substring_search(&self, search_string: &str) -> Vec<String> {
+            self.search_cache
                 .clone()
                 .into_iter()
-                .filter(|element| element.contains(searchstring))
+                .filter(|element| element.contains(search_string))
                 .collect()
         }
 
         // This method updates the searchcache variable based on a new search and the current
         // searchcache
         fn update_cache(&mut self) {
-            self.searchcache = self.substring_search(&self.searchstring)
+            self.search_cache = self.substring_search(&self.search_string)
         }
     }
 }
@@ -154,74 +154,74 @@ mod tests {
 
     #[test]
     fn two_word_test() {
-        let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill")]);
-        dbg!(testsearcher.add_character('h').unwrap());
-        dbg!(testsearcher.add_character('i').unwrap());
-        assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 2);
+        let mut test_searcher = Searcher::new(vec![String::from("hi"), String::from("hill")]);
+        dbg!(test_searcher.add_character('h').unwrap());
+        dbg!(test_searcher.add_character('i').unwrap());
+        assert_eq!(dbg!(test_searcher.search_results().unwrap()).len(), 2);
     }
 
     #[test]
     fn three_word_test() {
-        let mut testsearcher = Searcher::new(vec![
+        let mut test_searcher = Searcher::new(vec![
             String::from("hi"),
             String::from("hill"),
             String::from("hello"),
         ]);
-        dbg!(testsearcher.add_character('h').unwrap());
-        dbg!(testsearcher.add_character('i').unwrap());
-        assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 2);
+        dbg!(test_searcher.add_character('h').unwrap());
+        dbg!(test_searcher.add_character('i').unwrap());
+        assert_eq!(dbg!(test_searcher.search_results().unwrap()).len(), 2);
     }
 
     #[test]
     fn bad_add_test() {
-        let mut testsearcher = Searcher::new(vec![
+        let mut test_searcher = Searcher::new(vec![
             String::from("hi"),
             String::from("hill"),
             String::from("hello"),
         ]);
-        dbg!(testsearcher.add_character('h').unwrap());
-        dbg!(testsearcher.add_character('a').unwrap_err());
-        dbg!(testsearcher.add_character('i').unwrap());
-        assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 2);
+        dbg!(test_searcher.add_character('h').unwrap());
+        dbg!(test_searcher.add_character('a').unwrap_err());
+        dbg!(test_searcher.add_character('i').unwrap());
+        assert_eq!(dbg!(test_searcher.search_results().unwrap()).len(), 2);
     }
 
     #[test]
     fn remove_test() {
-        let mut testsearcher = Searcher::new(vec![
+        let mut test_searcher = Searcher::new(vec![
             String::from("hi"),
             String::from("hill"),
             String::from("hello"),
         ]);
-        dbg!(testsearcher.add_character('h').unwrap());
-        dbg!(testsearcher.add_character('i').unwrap());
-        dbg!(testsearcher.remove_character());
-        dbg!(testsearcher.add_character('e').unwrap());
-        assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 1);
+        dbg!(test_searcher.add_character('h').unwrap());
+        dbg!(test_searcher.add_character('i').unwrap());
+        dbg!(test_searcher.remove_character());
+        dbg!(test_searcher.add_character('e').unwrap());
+        assert_eq!(dbg!(test_searcher.search_results().unwrap()).len(), 1);
     }
 
     #[test]
     fn reset_test() {
-        let mut testsearcher = Searcher::new(vec![
+        let mut test_searcher = Searcher::new(vec![
             String::from("hi"),
             String::from("hill"),
             String::from("hello"),
         ]);
-        dbg!(testsearcher.add_character('h').unwrap());
-        dbg!(testsearcher.add_character('i').unwrap());
-        testsearcher.reset_search();
-        assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 3);
+        dbg!(test_searcher.add_character('h').unwrap());
+        dbg!(test_searcher.add_character('i').unwrap());
+        test_searcher.reset_search();
+        assert_eq!(dbg!(test_searcher.search_results().unwrap()).len(), 3);
     }
 
     #[test]
     fn add_to_vec_test() {
-        let mut testsearcher = Searcher::new(vec![
+        let mut test_searcher = Searcher::new(vec![
             String::from("hi"),
             String::from("hill"),
             String::from("hello"),
         ]);
-        dbg!(testsearcher.add_character('h').unwrap());
-        dbg!(testsearcher.add_character('e').unwrap());
-        testsearcher.add_to_vec(String::from("hev suit"));
-        assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 2);
+        dbg!(test_searcher.add_character('h').unwrap());
+        dbg!(test_searcher.add_character('e').unwrap());
+        test_searcher.add_to_vec(String::from("hev suit"));
+        assert_eq!(dbg!(test_searcher.search_results().unwrap()).len(), 2);
     }
 }
