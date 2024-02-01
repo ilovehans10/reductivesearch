@@ -66,7 +66,7 @@ pub mod reductivesearch {
             Err(format!("Adding character '{character}' to the search returned no results"))
         }
 
-        /// Adds a character to the search string and updates the search cache
+        /// Adds a character to the search string, resets the search cache, and updates the search cache
         ///
         /// # Examples
         ///
