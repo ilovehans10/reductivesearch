@@ -25,7 +25,7 @@ pub mod reductivesearch {
             }
         }
 
-        /// Returns the search results stored in the search wrapped in a result
+        /// Returns the search results
         ///
         /// # Examples
         ///
