@@ -110,6 +110,26 @@ pub mod reductivesearch {
             self.searchcache = self.tobesearched.clone();
         }
 
+        /// Add to the vec of strings to be searched through. This will also hard reset the cache.
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// use reductivesearch::reductivesearch::Searcher;
+        ///
+        /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// greetingsearch.add_character('h').unwrap();
+        /// greetingsearch.add_character('e').unwrap();
+        /// greetingsearch.add_to_vec(String::from("hev suit"));
+        ///
+        /// assert_eq!(vec![String::from("hello"), String::from("hev suit")], greetingsearch.search_results().unwrap());
+        /// ```
+        pub fn add_to_vec(&mut self, stringtoadd: String) {
+            self.tobesearched.push(stringtoadd);
+            self.searchcache = self.tobesearched.clone();
+            self.update_cache();
+        }
+
         // This searches each element of searchcache for searchstring, and returns a vector of all
         // of the results
         fn substring_search(&self, searchstring: &str) -> Vec<String> {
@@ -190,5 +210,18 @@ mod tests {
         dbg!(testsearcher.add_character('i').unwrap());
         testsearcher.reset_search();
         assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 3);
+    }
+
+    #[test]
+    fn add_to_vec_test() {
+        let mut testsearcher = Searcher::new(vec![
+            String::from("hi"),
+            String::from("hill"),
+            String::from("hello"),
+        ]);
+        dbg!(testsearcher.add_character('h').unwrap());
+        dbg!(testsearcher.add_character('e').unwrap());
+        testsearcher.add_to_vec(String::from("hev suit"));
+        assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 2);
     }
 }
