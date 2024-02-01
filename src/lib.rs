@@ -15,7 +15,7 @@ pub mod reductivesearch {
         /// ```
         /// use reductivesearch::reductivesearch::Searcher;
         ///
-        /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
         /// ```
         pub fn new(queried_strings: Vec<String>) -> Searcher {
             Searcher {
@@ -32,11 +32,11 @@ pub mod reductivesearch {
         /// ```
         /// use reductivesearch::reductivesearch::Searcher;
         ///
-        /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greetingsearch.add_character('h').unwrap();
-        /// greetingsearch.add_character('e').unwrap();
+        /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// greeting_search.add_character('h').unwrap();
+        /// greeting_search.add_character('e').unwrap();
         ///
-        /// assert_eq!(vec![String::from("hello")], greetingsearch.search_results().unwrap());
+        /// assert_eq!(vec![String::from("hello")], greeting_search.search_results().unwrap());
         /// ```
         pub fn search_results(&self) -> Result<Vec<String>, String> {
             if !self.search_cache.is_empty() {
@@ -53,11 +53,11 @@ pub mod reductivesearch {
         /// ```
         /// use reductivesearch::reductivesearch::Searcher;
         ///
-        /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greetingsearch.add_character('h').unwrap();
-        /// greetingsearch.add_character('e').unwrap();
+        /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// greeting_search.add_character('h').unwrap();
+        /// greeting_search.add_character('e').unwrap();
         ///
-        /// assert_eq!(vec![String::from("hello")], greetingsearch.search_results().unwrap());
+        /// assert_eq!(vec![String::from("hello")], greeting_search.search_results().unwrap());
         /// ```
         pub fn add_character(&mut self, character: char) -> Result<String, String> {
             let mut search_string: String = self.search_string.clone();
@@ -77,13 +77,13 @@ pub mod reductivesearch {
         /// ```
         /// use reductivesearch::reductivesearch::Searcher;
         ///
-        /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greetingsearch.add_character('h').unwrap();
-        /// greetingsearch.add_character('e').unwrap();
-        /// greetingsearch.remove_character();
-        /// greetingsearch.add_character('i').unwrap();
+        /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// greeting_search.add_character('h').unwrap();
+        /// greeting_search.add_character('e').unwrap();
+        /// greeting_search.remove_character();
+        /// greeting_search.add_character('i').unwrap();
         ///
-        /// assert_eq!(vec![String::from("hi")], greetingsearch.search_results().unwrap());
+        /// assert_eq!(vec![String::from("hi")], greeting_search.search_results().unwrap());
         /// ```
         pub fn remove_character(&mut self) {
             self.search_string.pop();
@@ -98,12 +98,12 @@ pub mod reductivesearch {
         /// ```
         /// use reductivesearch::reductivesearch::Searcher;
         ///
-        /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greetingsearch.add_character('h').unwrap();
-        /// greetingsearch.add_character('e').unwrap();
-        /// greetingsearch.reset_search();
+        /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// greeting_search.add_character('h').unwrap();
+        /// greeting_search.add_character('e').unwrap();
+        /// greeting_search.reset_search();
         ///
-        /// assert_eq!(vec![String::from("hi"), String::from("hello")], greetingsearch.search_results().unwrap());
+        /// assert_eq!(vec![String::from("hi"), String::from("hello")], greeting_search.search_results().unwrap());
         /// ```
         pub fn reset_search(&mut self) {
             self.search_string.clear();
@@ -117,12 +117,12 @@ pub mod reductivesearch {
         /// ```
         /// use reductivesearch::reductivesearch::Searcher;
         ///
-        /// let mut greetingsearch = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greetingsearch.add_character('h').unwrap();
-        /// greetingsearch.add_character('e').unwrap();
-        /// greetingsearch.add_to_vec(String::from("hev suit"));
+        /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// greeting_search.add_character('h').unwrap();
+        /// greeting_search.add_character('e').unwrap();
+        /// greeting_search.add_to_vec(String::from("hev suit"));
         ///
-        /// assert_eq!(vec![String::from("hello"), String::from("hev suit")], greetingsearch.search_results().unwrap());
+        /// assert_eq!(vec![String::from("hello"), String::from("hev suit")], greeting_search.search_results().unwrap());
         /// ```
         pub fn add_to_vec(&mut self, string_to_add: String) {
             self.queried_strings.push(string_to_add);
