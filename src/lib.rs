@@ -135,9 +135,9 @@ mod tests {
     #[test]
     fn two_word_test() {
         let mut testsearcher = Searcher::new(vec![String::from("hi"), String::from("hill")]);
-        testsearcher.add_character('h').unwrap();
-        testsearcher.add_character('i').unwrap();
-        assert_eq!(testsearcher.search_results().unwrap().len(), 2);
+        dbg!(testsearcher.add_character('h').unwrap());
+        dbg!(testsearcher.add_character('i').unwrap());
+        assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 2);
     }
 
     #[test]
@@ -147,9 +147,9 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        testsearcher.add_character('h').unwrap();
-        testsearcher.add_character('i').unwrap();
-        assert_eq!(testsearcher.search_results().unwrap().len(), 2);
+        dbg!(testsearcher.add_character('h').unwrap());
+        dbg!(testsearcher.add_character('i').unwrap());
+        assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 2);
     }
 
     #[test]
@@ -159,10 +159,10 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        testsearcher.add_character('h').unwrap();
-        testsearcher.add_character('a').unwrap_err();
-        testsearcher.add_character('i').unwrap();
-        assert_eq!(testsearcher.search_results().unwrap().len(), 2);
+        dbg!(testsearcher.add_character('h').unwrap());
+        dbg!(testsearcher.add_character('a').unwrap_err());
+        dbg!(testsearcher.add_character('i').unwrap());
+        assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 2);
     }
 
     #[test]
@@ -172,11 +172,11 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        testsearcher.add_character('h').unwrap();
-        testsearcher.add_character('i').unwrap();
-        testsearcher.remove_character();
-        testsearcher.add_character('e').unwrap();
-        assert_eq!(testsearcher.search_results().unwrap().len(), 1);
+        dbg!(testsearcher.add_character('h').unwrap());
+        dbg!(testsearcher.add_character('i').unwrap());
+        dbg!(testsearcher.remove_character());
+        dbg!(testsearcher.add_character('e').unwrap());
+        assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 1);
     }
 
     #[test]
@@ -186,9 +186,9 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        testsearcher.add_character('h').unwrap();
-        testsearcher.add_character('i').unwrap();
+        dbg!(testsearcher.add_character('h').unwrap());
+        dbg!(testsearcher.add_character('i').unwrap());
         testsearcher.reset_search();
-        assert_eq!(testsearcher.search_results().unwrap().len(), 3);
+        assert_eq!(dbg!(testsearcher.search_results().unwrap()).len(), 3);
     }
 }
