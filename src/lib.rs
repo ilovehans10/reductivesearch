@@ -67,7 +67,7 @@ pub mod reductivesearch {
                 self.update_cache();
                 return Ok(self.searchstring.clone())
             }
-            Err(String::from("Adding character {character} caused search to reutrn invalid"))
+            Err(String::from("Adding character {character} caused search to return invalid"))
         }
 
         /// Adds a character to the search string and updates the search cache
