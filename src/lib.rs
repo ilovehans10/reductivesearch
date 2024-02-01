@@ -1,4 +1,6 @@
 pub mod reductivesearch {
+    ///This is a searcher struct, it is the main interface for the reductive search module. It can
+    ///be added to
     pub struct Searcher {
         tobesearched: Vec<String>,
         searchstring: String,
