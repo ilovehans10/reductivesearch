@@ -116,6 +116,7 @@ pub mod reductivesearch {
         /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
         /// greeting_search.add_character('h').unwrap();
         /// greeting_search.add_character('e').unwrap();
+        /// greeting_search.add_to_vec(String::from("guten tag"));
         /// greeting_search.add_to_vec(String::from("hev suit"));
         ///
         /// assert_eq!(vec![String::from("hello"), String::from("hev suit")], greeting_search.search_results());
