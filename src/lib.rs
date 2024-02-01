@@ -36,14 +36,10 @@ pub mod reductivesearch {
         /// greeting_search.add_character('h').unwrap();
         /// greeting_search.add_character('e').unwrap();
         ///
-        /// assert_eq!(vec![String::from("hello")], greeting_search.search_results().unwrap());
+        /// assert_eq!(vec![String::from("hello")], greeting_search.search_results());
         /// ```
-        pub fn search_results(&self) -> Result<Vec<String>, String> {
-            if !self.search_cache.is_empty() {
-                Ok(self.search_cache.clone())
-            } else {
-                Err(String::from("String not found"))
-            }
+        pub fn search_results(&self) -> Vec<String> {
+            self.search_cache.clone()
         }
 
         /// Adds a character to the search string and updates the search cache
@@ -57,7 +53,7 @@ pub mod reductivesearch {
         /// greeting_search.add_character('h').unwrap();
         /// greeting_search.add_character('e').unwrap();
         ///
-        /// assert_eq!(vec![String::from("hello")], greeting_search.search_results().unwrap());
+        /// assert_eq!(vec![String::from("hello")], greeting_search.search_results());
         /// ```
         pub fn add_character(&mut self, character: char) -> Result<String, String> {
             let mut search_string: String = self.search_string.clone();
@@ -83,7 +79,7 @@ pub mod reductivesearch {
         /// greeting_search.remove_character();
         /// greeting_search.add_character('i').unwrap();
         ///
-        /// assert_eq!(vec![String::from("hi")], greeting_search.search_results().unwrap());
+        /// assert_eq!(vec![String::from("hi")], greeting_search.search_results());
         /// ```
         pub fn remove_character(&mut self) {
             self.search_string.pop();
@@ -103,7 +99,7 @@ pub mod reductivesearch {
         /// greeting_search.add_character('e').unwrap();
         /// greeting_search.reset_search();
         ///
-        /// assert_eq!(vec![String::from("hi"), String::from("hello")], greeting_search.search_results().unwrap());
+        /// assert_eq!(vec![String::from("hi"), String::from("hello")], greeting_search.search_results());
         /// ```
         pub fn reset_search(&mut self) {
             self.search_string.clear();
@@ -122,7 +118,7 @@ pub mod reductivesearch {
         /// greeting_search.add_character('e').unwrap();
         /// greeting_search.add_to_vec(String::from("hev suit"));
         ///
-        /// assert_eq!(vec![String::from("hello"), String::from("hev suit")], greeting_search.search_results().unwrap());
+        /// assert_eq!(vec![String::from("hello"), String::from("hev suit")], greeting_search.search_results());
         /// ```
         pub fn add_to_vec(&mut self, string_to_add: String) {
             self.queried_strings.push(string_to_add);
@@ -157,7 +153,7 @@ mod tests {
         let mut test_searcher = Searcher::new(vec![String::from("hi"), String::from("hill")]);
         dbg!(test_searcher.add_character('h').unwrap());
         dbg!(test_searcher.add_character('i').unwrap());
-        assert_eq!(dbg!(test_searcher.search_results().unwrap()).len(), 2);
+        assert_eq!(dbg!(test_searcher.search_results()).len(), 2);
     }
 
     #[test]
@@ -169,7 +165,7 @@ mod tests {
         ]);
         dbg!(test_searcher.add_character('h').unwrap());
         dbg!(test_searcher.add_character('i').unwrap());
-        assert_eq!(dbg!(test_searcher.search_results().unwrap()).len(), 2);
+        assert_eq!(dbg!(test_searcher.search_results()).len(), 2);
     }
 
     #[test]
@@ -182,7 +178,7 @@ mod tests {
         dbg!(test_searcher.add_character('h').unwrap());
         dbg!(test_searcher.add_character('a').unwrap_err());
         dbg!(test_searcher.add_character('i').unwrap());
-        assert_eq!(dbg!(test_searcher.search_results().unwrap()).len(), 2);
+        assert_eq!(dbg!(test_searcher.search_results()).len(), 2);
     }
 
     #[test]
@@ -196,7 +192,7 @@ mod tests {
         dbg!(test_searcher.add_character('i').unwrap());
         dbg!(test_searcher.remove_character());
         dbg!(test_searcher.add_character('e').unwrap());
-        assert_eq!(dbg!(test_searcher.search_results().unwrap()).len(), 1);
+        assert_eq!(dbg!(test_searcher.search_results()).len(), 1);
     }
 
     #[test]
@@ -209,7 +205,7 @@ mod tests {
         dbg!(test_searcher.add_character('h').unwrap());
         dbg!(test_searcher.add_character('i').unwrap());
         test_searcher.reset_search();
-        assert_eq!(dbg!(test_searcher.search_results().unwrap()).len(), 3);
+        assert_eq!(dbg!(test_searcher.search_results()).len(), 3);
     }
 
     #[test]
@@ -222,6 +218,6 @@ mod tests {
         dbg!(test_searcher.add_character('h').unwrap());
         dbg!(test_searcher.add_character('e').unwrap());
         test_searcher.add_to_vec(String::from("hev suit"));
-        assert_eq!(dbg!(test_searcher.search_results().unwrap()).len(), 2);
+        assert_eq!(dbg!(test_searcher.search_results()).len(), 2);
     }
 }
