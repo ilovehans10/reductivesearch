@@ -221,7 +221,7 @@ mod tests {
             String::from("hello"),
         ]);
         dbg!(test_searcher.add_character('h').expect("h should be able to be added to search string"));
-        dbg!(test_searcher.add_character('a').unwrap_err());
+        dbg!(test_searcher.add_character('a').expect_err("a shouldn't be able to be added to the search"));
         dbg!(test_searcher.add_character('i').expect("i should be able to be added to search string"));
         assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hi"), String::from("hill")]);
     }
@@ -282,7 +282,7 @@ mod tests {
         let mut test_searcher = Searcher::new(vec![
             String::from("hello"),
         ]);
-        dbg!(test_searcher.remove_from_vec("hello").unwrap_err());
+        dbg!(test_searcher.remove_from_vec("hello").expect_err("removing hello would empty the searcher which isn't allowed"));
         assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hello")]);
     }
 }
