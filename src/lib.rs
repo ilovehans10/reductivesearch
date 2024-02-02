@@ -135,6 +135,39 @@ pub mod reductivesearch {
             self.update_cache();
         }
 
+        /// Remove a string from the vector of strings to search
+        ///
+        /// # Errors
+        ///
+        /// This returns errors if the string is not found in the ``queried_strings`` or the string
+        /// can't be removed without removing the last item from the search.
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// use reductivesearch::reductivesearch::Searcher;
+        ///
+        /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
+        /// greeting_search.remove_from_vec("hi");
+        ///
+        /// assert_eq!(vec![String::from("hello")], greeting_search.search_results());
+        /// ```
+        pub fn remove_from_vec(&mut self, string_to_remove: &str) -> Result<String, String> {
+            if self.queried_strings.len() < 2 {
+                return Err(String::from("Can't remove last item from search"))
+            }
+            let result: String;
+            let possible_index = self.queried_strings.iter().position(|element| *element == string_to_remove);
+            if let Some(index) = possible_index {
+            result = self.queried_strings.remove(index);
+            } else {
+                return Err(String::from("Couldn't find string in queried_strings"))
+            }
+            self.search_cache = self.queried_strings.clone();
+            self.update_cache();
+            Ok(result)
+        }
+
         // This searches each element of searchcache for searchstring, and returns a vector of all
         // of the results
         fn substring_search(&self, search_string: &str) -> Vec<String> {
@@ -228,5 +261,25 @@ mod tests {
         dbg!(test_searcher.add_character('e').unwrap());
         test_searcher.add_to_vec(String::from("hev suit"));
         assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hello"), String::from("hev suit")]);
+    }
+
+    #[test]
+    fn good_remove_from_vec_test() {
+        let mut test_searcher = Searcher::new(vec![
+            String::from("hi"),
+            String::from("hill"),
+            String::from("hello"),
+        ]);
+        dbg!(test_searcher.remove_from_vec("hello").unwrap());
+        assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hi"), String::from("hill")]);
+    }
+
+    #[test]
+    fn bad_remove_from_vec_test() {
+        let mut test_searcher = Searcher::new(vec![
+            String::from("hello"),
+        ]);
+        dbg!(test_searcher.remove_from_vec("hello").unwrap_err());
+        assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hello")]);
     }
 }
