@@ -17,8 +17,9 @@ pub mod reductivesearch {
         ///
         /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
         /// ```
-        pub fn new(queried_strings: Vec<String>) -> Searcher {
-            Searcher {
+        #[must_use]
+        pub fn new(queried_strings: Vec<String>) -> Self {
+            Self {
                 search_cache: queried_strings.clone(),
                 queried_strings,
                 search_string: String::new(),
@@ -38,11 +39,18 @@ pub mod reductivesearch {
         ///
         /// assert_eq!(vec![String::from("hello")], greeting_search.search_results());
         /// ```
+        #[must_use]
         pub fn search_results(&self) -> Vec<String> {
             self.search_cache.clone()
         }
 
         /// Adds a character to the search string and updates the search cache
+        ///
+        /// # Errors
+        ///
+        /// Will return an error if the character can't be added to the search. This will happen if
+        /// the search string + the argument character doesn't appear in any of the strings to be
+        /// searched.
         ///
         /// # Examples
         ///
@@ -140,7 +148,7 @@ pub mod reductivesearch {
         // This method updates the searchcache variable based on a new search and the current
         // searchcache
         fn update_cache(&mut self) {
-            self.search_cache = self.substring_search(&self.search_string)
+            self.search_cache = self.substring_search(&self.search_string);
         }
     }
 }
