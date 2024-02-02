@@ -162,7 +162,7 @@ mod tests {
         let mut test_searcher = Searcher::new(vec![String::from("hi"), String::from("hill")]);
         dbg!(test_searcher.add_character('h').unwrap());
         dbg!(test_searcher.add_character('i').unwrap());
-        assert_eq!(dbg!(test_searcher.search_results()).len(), 2);
+        assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hi"), String::from("hill")]);
     }
 
     #[test]
@@ -174,7 +174,7 @@ mod tests {
         ]);
         dbg!(test_searcher.add_character('h').unwrap());
         dbg!(test_searcher.add_character('i').unwrap());
-        assert_eq!(dbg!(test_searcher.search_results()).len(), 2);
+        assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hi"), String::from("hill")]);
     }
 
     #[test]
@@ -187,7 +187,7 @@ mod tests {
         dbg!(test_searcher.add_character('h').unwrap());
         dbg!(test_searcher.add_character('a').unwrap_err());
         dbg!(test_searcher.add_character('i').unwrap());
-        assert_eq!(dbg!(test_searcher.search_results()).len(), 2);
+        assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hi"), String::from("hill")]);
     }
 
     #[test]
@@ -201,7 +201,7 @@ mod tests {
         dbg!(test_searcher.add_character('i').unwrap());
         dbg!(test_searcher.remove_character());
         dbg!(test_searcher.add_character('e').unwrap());
-        assert_eq!(dbg!(test_searcher.search_results()).len(), 1);
+        assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hello")]);
     }
 
     #[test]
@@ -214,7 +214,7 @@ mod tests {
         dbg!(test_searcher.add_character('h').unwrap());
         dbg!(test_searcher.add_character('i').unwrap());
         test_searcher.reset_search();
-        assert_eq!(dbg!(test_searcher.search_results()).len(), 3);
+        assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hi"), String::from("hill"), String::from("hello")]);
     }
 
     #[test]
@@ -227,6 +227,6 @@ mod tests {
         dbg!(test_searcher.add_character('h').unwrap());
         dbg!(test_searcher.add_character('e').unwrap());
         test_searcher.add_to_vec(String::from("hev suit"));
-        assert_eq!(dbg!(test_searcher.search_results()).len(), 2);
+        assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hello"), String::from("hev suit")]);
     }
 }
