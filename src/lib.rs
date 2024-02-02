@@ -91,8 +91,7 @@ pub mod reductivesearch {
         /// ```
         pub fn remove_character(&mut self) {
             self.search_string.pop();
-            self.search_cache = self.queried_strings.clone();
-            self.update_cache();
+            self.reset_cache();
         }
 
         /// Clears the search and resets the search cache
@@ -131,8 +130,7 @@ pub mod reductivesearch {
         /// ```
         pub fn add_to_vec(&mut self, string_to_add: String) {
             self.queried_strings.push(string_to_add);
-            self.search_cache = self.queried_strings.clone();
-            self.update_cache();
+            self.reset_cache();
         }
 
         /// Remove a string from the vector of strings to search
@@ -163,8 +161,7 @@ pub mod reductivesearch {
             } else {
                 return Err(String::from("Couldn't find string in queried_strings"))
             }
-            self.search_cache = self.queried_strings.clone();
-            self.update_cache();
+            self.reset_cache();
             Ok(result)
         }
 
@@ -182,6 +179,12 @@ pub mod reductivesearch {
         // searchcache
         fn update_cache(&mut self) {
             self.search_cache = self.substring_search(&self.search_string);
+        }
+
+        // This method resets the search_cache from queried_strings
+        fn reset_cache(&mut self) {
+            self.search_cache = self.queried_strings.clone();
+            self.update_cache();
         }
     }
 }
