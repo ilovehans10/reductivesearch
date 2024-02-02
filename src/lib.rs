@@ -145,7 +145,7 @@ pub mod reductivesearch {
                 .collect()
         }
 
-        // This method updates the searchcache variable based on a new search and the current
+        // This method updates the search_cache variable based on a new search and the current
         // searchcache
         fn update_cache(&mut self) {
             self.search_cache = self.substring_search(&self.search_string);
