@@ -196,8 +196,8 @@ mod tests {
     #[test]
     fn two_word_test() {
         let mut test_searcher = Searcher::new(vec![String::from("hi"), String::from("hill")]);
-        dbg!(test_searcher.add_character('h').unwrap());
-        dbg!(test_searcher.add_character('i').unwrap());
+        dbg!(test_searcher.add_character('h').expect("h should be able to be added to search string"));
+        dbg!(test_searcher.add_character('i').expect("i should be able to be added to search string"));
         assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hi"), String::from("hill")]);
     }
 
@@ -208,8 +208,8 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        dbg!(test_searcher.add_character('h').unwrap());
-        dbg!(test_searcher.add_character('i').unwrap());
+        dbg!(test_searcher.add_character('h').expect("h should be able to be added to search string"));
+        dbg!(test_searcher.add_character('i').expect("i should be able to be added to search string"));
         assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hi"), String::from("hill")]);
     }
 
@@ -220,9 +220,9 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        dbg!(test_searcher.add_character('h').unwrap());
+        dbg!(test_searcher.add_character('h').expect("h should be able to be added to search string"));
         dbg!(test_searcher.add_character('a').unwrap_err());
-        dbg!(test_searcher.add_character('i').unwrap());
+        dbg!(test_searcher.add_character('i').expect("i should be able to be added to search string"));
         assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hi"), String::from("hill")]);
     }
 
@@ -233,10 +233,10 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        dbg!(test_searcher.add_character('h').unwrap());
-        dbg!(test_searcher.add_character('i').unwrap());
+        dbg!(test_searcher.add_character('h').expect("h should be able to be added to search string"));
+        dbg!(test_searcher.add_character('i').expect("i should be able to be added to search string"));
         dbg!(test_searcher.remove_character());
-        dbg!(test_searcher.add_character('e').unwrap());
+        dbg!(test_searcher.add_character('e').expect("e should be able to be added to search string"));
         assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hello")]);
     }
 
@@ -247,8 +247,8 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        dbg!(test_searcher.add_character('h').unwrap());
-        dbg!(test_searcher.add_character('i').unwrap());
+        dbg!(test_searcher.add_character('h').expect("h should be able to be added to search string"));
+        dbg!(test_searcher.add_character('i').expect("i should be able to be added to search string"));
         test_searcher.reset_search();
         assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hi"), String::from("hill"), String::from("hello")]);
     }
@@ -260,8 +260,8 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        dbg!(test_searcher.add_character('h').unwrap());
-        dbg!(test_searcher.add_character('e').unwrap());
+        dbg!(test_searcher.add_character('h').expect("h should be able to be added to search string"));
+        dbg!(test_searcher.add_character('e').expect("e should be able to be added to search string"));
         test_searcher.add_to_vec(String::from("hev suit"));
         assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hello"), String::from("hev suit")]);
     }
@@ -273,7 +273,7 @@ mod tests {
             String::from("hill"),
             String::from("hello"),
         ]);
-        dbg!(test_searcher.remove_from_vec("hello").unwrap());
+        dbg!(test_searcher.remove_from_vec("hello").expect("should be able to remove hello from queried_strings"));
         assert_eq!(dbg!(test_searcher.search_results()), vec![String::from("hi"), String::from("hill")]);
     }
 
