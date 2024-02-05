@@ -34,8 +34,8 @@ pub mod reductivesearch {
         /// use reductivesearch::reductivesearch::Searcher;
         ///
         /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greeting_search.add_character('h').unwrap();
-        /// greeting_search.add_character('e').unwrap();
+        /// greeting_search.add_search_character('h').unwrap();
+        /// greeting_search.add_search_character('e').unwrap();
         ///
         /// assert_eq!(vec![String::from("hello")], greeting_search.search_results());
         /// ```
@@ -58,12 +58,12 @@ pub mod reductivesearch {
         /// use reductivesearch::reductivesearch::Searcher;
         ///
         /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greeting_search.add_character('h').unwrap();
-        /// greeting_search.add_character('e').unwrap();
+        /// greeting_search.add_search_character('h').unwrap();
+        /// greeting_search.add_search_character('e').unwrap();
         ///
         /// assert_eq!(vec![String::from("hello")], greeting_search.search_results());
         /// ```
-        pub fn add_character(&mut self, character: char) -> Result<String, String> {
+        pub fn add_search_character(&mut self, character: char) -> Result<String, String> {
             let mut search_string: String = self.search_string.clone();
             search_string.push(character);
             if !self.substring_search(search_string.as_str()).is_empty() {
@@ -84,14 +84,14 @@ pub mod reductivesearch {
         /// use reductivesearch::reductivesearch::Searcher;
         ///
         /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greeting_search.add_character('h').unwrap();
-        /// greeting_search.add_character('e').unwrap();
-        /// greeting_search.remove_character();
-        /// greeting_search.add_character('i').unwrap();
+        /// greeting_search.add_search_character('h').unwrap();
+        /// greeting_search.add_search_character('e').unwrap();
+        /// greeting_search.remove_search_character();
+        /// greeting_search.add_search_character('i').unwrap();
         ///
         /// assert_eq!(vec![String::from("hi")], greeting_search.search_results());
         /// ```
-        pub fn remove_character(&mut self) {
+        pub fn remove_search_character(&mut self) {
             self.search_string.pop();
             self.reset_cache();
         }
@@ -104,8 +104,8 @@ pub mod reductivesearch {
         /// use reductivesearch::reductivesearch::Searcher;
         ///
         /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greeting_search.add_character('h').unwrap();
-        /// greeting_search.add_character('e').unwrap();
+        /// greeting_search.add_search_character('h').unwrap();
+        /// greeting_search.add_search_character('e').unwrap();
         /// greeting_search.reset_search();
         ///
         /// assert_eq!(vec![String::from("hi"), String::from("hello")], greeting_search.search_results());
@@ -123,8 +123,8 @@ pub mod reductivesearch {
         /// use reductivesearch::reductivesearch::Searcher;
         ///
         /// let mut greeting_search = Searcher::new(vec![String::from("hi"), String::from("hello")]);
-        /// greeting_search.add_character('h').unwrap();
-        /// greeting_search.add_character('e').unwrap();
+        /// greeting_search.add_search_character('h').unwrap();
+        /// greeting_search.add_search_character('e').unwrap();
         /// greeting_search.add_to_vec(String::from("guten tag"));
         /// greeting_search.add_to_vec(String::from("hev suit"));
         ///
@@ -202,10 +202,10 @@ mod tests {
     fn two_word_test() {
         let mut test_searcher = Searcher::new(vec![String::from("hi"), String::from("hill")]);
         dbg!(test_searcher
-            .add_character('h')
+            .add_search_character('h')
             .expect("h should be able to be added to search string"));
         dbg!(test_searcher
-            .add_character('i')
+            .add_search_character('i')
             .expect("i should be able to be added to search string"));
         assert_eq!(
             dbg!(test_searcher.search_results()),
@@ -221,10 +221,10 @@ mod tests {
             String::from("hello"),
         ]);
         dbg!(test_searcher
-            .add_character('h')
+            .add_search_character('h')
             .expect("h should be able to be added to search string"));
         dbg!(test_searcher
-            .add_character('i')
+            .add_search_character('i')
             .expect("i should be able to be added to search string"));
         assert_eq!(
             dbg!(test_searcher.search_results()),
@@ -240,13 +240,13 @@ mod tests {
             String::from("hello"),
         ]);
         dbg!(test_searcher
-            .add_character('h')
+            .add_search_character('h')
             .expect("h should be able to be added to search string"));
         dbg!(test_searcher
-            .add_character('a')
+            .add_search_character('a')
             .expect_err("a shouldn't be able to be added to the search"));
         dbg!(test_searcher
-            .add_character('i')
+            .add_search_character('i')
             .expect("i should be able to be added to search string"));
         assert_eq!(
             dbg!(test_searcher.search_results()),
@@ -262,14 +262,14 @@ mod tests {
             String::from("hello"),
         ]);
         dbg!(test_searcher
-            .add_character('h')
+            .add_search_character('h')
             .expect("h should be able to be added to search string"));
         dbg!(test_searcher
-            .add_character('i')
+            .add_search_character('i')
             .expect("i should be able to be added to search string"));
-        dbg!(test_searcher.remove_character());
+        dbg!(test_searcher.remove_search_character());
         dbg!(test_searcher
-            .add_character('e')
+            .add_search_character('e')
             .expect("e should be able to be added to search string"));
         assert_eq!(
             dbg!(test_searcher.search_results()),
@@ -285,10 +285,10 @@ mod tests {
             String::from("hello"),
         ]);
         dbg!(test_searcher
-            .add_character('h')
+            .add_search_character('h')
             .expect("h should be able to be added to search string"));
         dbg!(test_searcher
-            .add_character('i')
+            .add_search_character('i')
             .expect("i should be able to be added to search string"));
         test_searcher.reset_search();
         assert_eq!(
@@ -309,10 +309,10 @@ mod tests {
             String::from("hello"),
         ]);
         dbg!(test_searcher
-            .add_character('h')
+            .add_search_character('h')
             .expect("h should be able to be added to search string"));
         dbg!(test_searcher
-            .add_character('e')
+            .add_search_character('e')
             .expect("e should be able to be added to search string"));
         test_searcher.add_to_vec(String::from("hev suit"));
         assert_eq!(
