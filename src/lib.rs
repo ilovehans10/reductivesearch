@@ -360,7 +360,7 @@ mod tests {
     }
 
     #[test]
-    fn good_remove_from_vec_test() {
+    fn remove_good_from_vec_test() {
         let mut test_searcher = Searcher::new(vec![
             String::from("hi"),
             String::from("hill"),
@@ -376,7 +376,7 @@ mod tests {
     }
 
     #[test]
-    fn bad_remove_from_vec_test() {
+    fn remove_bad_from_vec_test() {
         let mut test_searcher = Searcher::new(vec![String::from("hello")]);
         dbg!(test_searcher
             .remove_from_vec("hello")
