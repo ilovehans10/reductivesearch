@@ -144,8 +144,8 @@ pub mod reductivesearch {
         /// Remove a string from the vector of strings to search
         ///
         /// # Errors
-        ///
-        /// This returns errors if the string is not found in the ``queried_strings`` or the string
+        /// This returns ``SearcherError::NoneFound`` if the string is not found in the
+        /// ``queried_strings`` or ``SearcherError::EmptyingRepository`` if the string
         /// can't be removed without removing the last item from the search.
         ///
         /// # Examples
