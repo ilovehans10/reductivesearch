@@ -1,10 +1,18 @@
 pub mod reductivesearch {
+    use std::{error::Error, fmt};
+
     ///This is a searcher struct, it is the main interface for the reductive search module. It can
     ///be added to
     pub struct Searcher {
         queried_strings: Vec<String>,
         search_string: String,
         search_cache: Vec<String>,
+    }
+
+    #[derive(Debug)]
+    pub enum SearchError {
+        NoneFound(String),
+        EmptyRepository,
     }
 
     impl Searcher {
@@ -63,7 +71,7 @@ pub mod reductivesearch {
         ///
         /// assert_eq!(vec![String::from("hello")], greeting_search.search_results());
         /// ```
-        pub fn add_search_character(&mut self, character: char) -> Result<String, String> {
+        pub fn add_search_character(&mut self, character: char) -> Result<String, SearchError> {
             let mut search_string: String = self.search_string.clone();
             search_string.push(character);
             if !self.substring_search(search_string.as_str()).is_empty() {
@@ -71,9 +79,7 @@ pub mod reductivesearch {
                 self.update_cache();
                 return Ok(self.search_string.clone());
             }
-            Err(format!(
-                "Adding character '{character}' to the search returned no results"
-            ))
+            Err(SearchError::NoneFound(character.into()))
         }
 
         /// Adds a character to the search string, resets the search cache, and updates the search cache
@@ -192,6 +198,19 @@ pub mod reductivesearch {
             self.update_cache();
         }
     }
+
+    impl Error for SearchError {}
+
+    impl fmt::Display for SearchError {
+        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            match self {
+                Self::NoneFound(errorstring) => {
+                    write!(f, "string '{errorstring}' didn't return any results")
+                }
+                Self::EmptyRepository => write!(f, "the search repository is empty"),
+            }
+        }
+    }
 }
 
 #[cfg(test)]
@@ -252,6 +271,25 @@ mod tests {
             dbg!(test_searcher.search_results()),
             vec![String::from("hi"), String::from("hill")]
         );
+    }
+
+    #[test]
+    fn custom_error_test() {
+        let mut test_searcher = Searcher::new(vec![
+            String::from("hi"),
+            String::from("hill"),
+            String::from("hello"),
+        ]);
+        dbg!(test_searcher
+            .add_search_character('h')
+            .expect("h should be able to be added to search string"));
+        assert!(match dbg!(test_searcher
+            .add_search_character('a')
+            .expect_err("should return a SearchError::NoneFound"))
+        {
+            SearchError::NoneFound(string) => string == "a",
+            SearchError::EmptyRepository => false,
+        });
     }
 
     #[test]
