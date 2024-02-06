@@ -10,9 +10,9 @@ pub mod reductivesearch {
     }
 
     #[derive(Debug)]
-    pub enum SearchError {
+    pub enum SearcherError {
         NoneFound(String),
-        EmptyRepository,
+        EmptyingRepository,
     }
 
     impl Searcher {
@@ -71,7 +71,7 @@ pub mod reductivesearch {
         ///
         /// assert_eq!(vec![String::from("hello")], greeting_search.search_results());
         /// ```
-        pub fn add_search_character(&mut self, character: char) -> Result<String, SearchError> {
+        pub fn add_search_character(&mut self, character: char) -> Result<String, SearcherError> {
             let mut search_string: String = self.search_string.clone();
             search_string.push(character);
             if !self.substring_search(search_string.as_str()).is_empty() {
@@ -79,7 +79,7 @@ pub mod reductivesearch {
                 self.update_cache();
                 return Ok(self.search_string.clone());
             }
-            Err(SearchError::NoneFound(character.into()))
+            Err(SearcherError::NoneFound(character.into()))
         }
 
         /// Adds a character to the search string, resets the search cache, and updates the search cache
@@ -158,9 +158,9 @@ pub mod reductivesearch {
         ///
         /// assert_eq!(vec![String::from("hello")], greeting_search.search_results());
         /// ```
-        pub fn remove_from_vec(&mut self, string_to_remove: &str) -> Result<String, String> {
+        pub fn remove_from_vec(&mut self, string_to_remove: &str) -> Result<String, SearcherError> {
             if self.queried_strings.len() < 2 {
-                return Err(String::from("Can't remove last item from search"));
+                return Err(SearcherError::EmptyingRepository);
             }
             let result: String;
             let possible_index = self
@@ -170,7 +170,7 @@ pub mod reductivesearch {
             if let Some(index) = possible_index {
                 result = self.queried_strings.remove(index);
             } else {
-                return Err(String::from("Couldn't find string in queried_strings"));
+                return Err(SearcherError::NoneFound(string_to_remove.into()));
             }
             self.reset_cache();
             Ok(result)
@@ -199,15 +199,15 @@ pub mod reductivesearch {
         }
     }
 
-    impl Error for SearchError {}
+    impl Error for SearcherError {}
 
-    impl fmt::Display for SearchError {
+    impl fmt::Display for SearcherError {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             match self {
                 Self::NoneFound(errorstring) => {
                     write!(f, "string '{errorstring}' didn't return any results")
                 }
-                Self::EmptyRepository => write!(f, "the search repository is empty"),
+                Self::EmptyingRepository => write!(f, "the search repository is empty"),
             }
         }
     }
@@ -285,10 +285,10 @@ mod tests {
             .expect("h should be able to be added to search string"));
         assert!(match dbg!(test_searcher
             .add_search_character('a')
-            .expect_err("should return a SearchError::NoneFound"))
+            .expect_err("should return a SearcherError::NoneFound"))
         {
-            SearchError::NoneFound(string) => string == "a",
-            SearchError::EmptyRepository => false,
+            SearcherError::NoneFound(string) => string == "a",
+            SearcherError::EmptyingRepository => false,
         });
     }
 
