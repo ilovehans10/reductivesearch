@@ -13,6 +13,7 @@ pub mod reductivesearch {
     pub enum SearcherError {
         NoneFound(String),
         EmptyingRepository,
+        SeachStringShrunk(String),
     }
 
     impl Searcher {
@@ -172,7 +173,14 @@ pub mod reductivesearch {
             } else {
                 return Err(SearcherError::NoneFound(string_to_remove.into()));
             }
-            self.reset_cache();
+            self.search_cache = self.queried_strings.clone();
+            if self.substring_search(&self.search_string).is_empty() {
+                while self.substring_search(&self.search_string).is_empty() {
+                    self.search_string.truncate(self.search_string.len() - 1);
+                }
+                return Err(SearcherError::SeachStringShrunk(self.search_string.clone()))
+            }
+            self.update_cache();
             Ok(result)
         }
 
@@ -204,10 +212,11 @@ pub mod reductivesearch {
     impl fmt::Display for SearcherError {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             match self {
-                Self::NoneFound(errorstring) => {
-                    write!(f, "string '{errorstring}' didn't return any results")
+                Self::NoneFound(error_string) => {
+                    write!(f, "string '{error_string}' didn't return any results")
                 }
                 Self::EmptyingRepository => write!(f, "the search repository is empty"),
+                Self::SeachStringShrunk(search_string) => write!(f, "the search string was changed to \"{search_string}\" because it yeilded no results"),
             }
         }
     }
@@ -288,7 +297,7 @@ mod tests {
             .expect_err("should return a SearcherError::NoneFound"))
         {
             SearcherError::NoneFound(string) => string == "a",
-            SearcherError::EmptyingRepository => false,
+            SearcherError::SeachStringShrunk(_) | SearcherError::EmptyingRepository => false,
         });
     }
 
@@ -384,6 +393,28 @@ mod tests {
         assert_eq!(
             dbg!(test_searcher.search_results()),
             vec![String::from("hello")]
+        );
+    }
+
+    #[test]
+    fn remove_searched_from_vec_test() {
+        let mut test_searcher = Searcher::new(vec![
+            String::from("hi"),
+            String::from("hill"),
+            String::from("hello"),
+        ]);
+        dbg!(test_searcher
+            .add_search_character('h')
+            .expect("h should be able to be added to search string"));
+        dbg!(test_searcher
+            .add_search_character('e')
+            .expect("e should be able to be added to search string"));
+        dbg!(test_searcher
+            .remove_from_vec("hello")
+            .expect_err("removing hello should roll the search string back to \"h\" and return a SearcherError::SeachStringShrunk(\"h\")"));
+        assert_eq!(
+            dbg!(test_searcher.search_results()),
+            vec![String::from("hi"), String::from("hill")]
         );
     }
 }
