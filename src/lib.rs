@@ -178,7 +178,7 @@ pub mod reductivesearch {
                 while self.substring_search(&self.search_string).is_empty() {
                     self.search_string.pop();
                 }
-                return Err(SearcherError::SeachStringShrunk(self.search_string.clone()))
+                return Err(SearcherError::SeachStringShrunk(self.search_string.clone()));
             }
             self.update_cache();
             Ok(result)
