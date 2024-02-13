@@ -83,7 +83,8 @@ pub mod reductivesearch {
             Err(SearcherError::NoneFound(character.into()))
         }
 
-        /// Adds a character to the search string, resets the search cache, and updates the search cache
+        /// Adds a character to the search string, resets the search cache, and updates the search
+        /// cache. Returns the value of the search string
         ///
         /// # Examples
         ///
@@ -98,12 +99,13 @@ pub mod reductivesearch {
         ///
         /// assert_eq!(vec![String::from("hi")], greeting_search.search_results());
         /// ```
-        pub fn remove_search_character(&mut self) {
+        pub fn remove_search_character(&mut self) -> String {
             self.search_string.pop();
             self.reset_cache();
+            self.search_string.clone()
         }
 
-        /// Clears the search and resets the search cache
+        /// Clears the search and resets the search cache. Returns the value of the search string
         ///
         /// # Examples
         ///
@@ -117,9 +119,10 @@ pub mod reductivesearch {
         ///
         /// assert_eq!(vec![String::from("hi"), String::from("hello")], greeting_search.search_results());
         /// ```
-        pub fn reset_search(&mut self) {
+        pub fn reset_search(&mut self) -> String {
             self.search_string.clear();
             self.search_cache = self.queried_strings.clone();
+            self.search_string.clone()
         }
 
         /// Add to the vec of strings to be searched through. This will also hard reset the cache.
